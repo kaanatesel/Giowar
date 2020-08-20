@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +7,7 @@ using UnityEngineInternal;
 
 public class Manager : MonoBehaviour
 {
-    private GameObject activeObject;
+    private GameObject activeObject = null;
     void Start()
     {
         
@@ -26,33 +27,33 @@ public class Manager : MonoBehaviour
             Vector2 pos = Camera.main.ScreenToWorldPoint(touch.position);
             RaycastHit2D hit = Physics2D.Raycast(pos, Camera.main.transform.forward);
 
-            if (activeObject != null)
-            {
-                
-                SpriteRenderer spriteRenderer = activeObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
-                spriteRenderer.color = Color.red;
-            }
-
+            
             if (hit.collider != null)
             {
-               
-                if (hit.collider.tag == "Platform")
+                if(activeObject != null)
                 {
-                    Debug.Log("this is Platform=");
+                    IselectAble tmp = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
+                    tmp.setSelect(false);
                     activeObject = hit.collider.gameObject;
-                    SpriteRenderer spriteRenderer = activeObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
-                    spriteRenderer.color = Color.black;
+                    IselectAble selectedObject = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
+                    selectedObject.setSelect(true);
                 }
-                if (hit.collider.tag == "Factory")
+                else
                 {
-                    Debug.Log("this is Factory");
+                    activeObject = hit.collider.gameObject;
+                    IselectAble selectedObject = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
+                    selectedObject.setSelect(true);
                 }
             }
             else
             {
-                SpriteRenderer spriteRenderer = activeObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
-                spriteRenderer.color = Color.red;
-                activeObject = null;
+                Debug.Log("dont hit");
+                if(activeObject != null)
+                {
+                    IselectAble platform = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
+                    platform.setSelect(false);
+                    activeObject = null;
+                }
             }
         }
     }
