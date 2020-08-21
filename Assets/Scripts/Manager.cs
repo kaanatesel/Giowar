@@ -47,7 +47,6 @@ public class Manager : MonoBehaviour
             }
             else
             {
-                Debug.Log("dont hit");
                 if(activeObject != null)
                 {
                     IselectAble platform = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
