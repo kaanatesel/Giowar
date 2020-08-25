@@ -23,11 +23,11 @@ public class Manager : MonoBehaviour
     {
         if(Input.touchCount > 0)
         {
+            Debug.Log("tohadfh");
             Touch touch = Input.GetTouch(0);
+            Debug.Log(touch);
             Vector2 pos = Camera.main.ScreenToWorldPoint(touch.position);
             RaycastHit2D hit = Physics2D.Raycast(pos, Camera.main.transform.forward);
-
-            
             if (hit.collider != null)
             {
                 if(activeObject != null)
