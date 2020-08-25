@@ -7,6 +7,7 @@ using UnityEngineInternal;
 
 public class Manager : MonoBehaviour
 {
+    public Button buildBtn;
     private GameObject activeObject = null;
     void Start()
     {
@@ -16,43 +17,55 @@ public class Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (activeObject != null && activeObject.tag == "Platform")
+        {
+            buildBtn.interactable = true;
+        }
+        else
+        {
+            buildBtn.interactable = false;
+        }
     }
 
     void FixedUpdate()
     {
-        if(Input.touchCount > 0)
+        if (Input.touchCount > 0)
         {
-            Debug.Log("tohadfh");
             Touch touch = Input.GetTouch(0);
-            Debug.Log(touch);
             Vector2 pos = Camera.main.ScreenToWorldPoint(touch.position);
             RaycastHit2D hit = Physics2D.Raycast(pos, Camera.main.transform.forward);
-            if (hit.collider != null)
+            if (touch.position.y > 30)
             {
-                if(activeObject != null)
+                if (hit.collider != null)
                 {
-                    IselectAble tmp = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
-                    tmp.setSelect(false);
-                    activeObject = hit.collider.gameObject;
-                    IselectAble selectedObject = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
-                    selectedObject.setSelect(true);
+                    if (activeObject != null)
+                    {
+                        IselectAble tmp = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
+                        tmp.setSelect(false);
+                        activeObject = hit.collider.gameObject;
+                        IselectAble selectedObject = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
+                        selectedObject.setSelect(true);
+                    }
+                    else
+                    {
+                        activeObject = hit.collider.gameObject;
+                        IselectAble selectedObject = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
+                        selectedObject.setSelect(true);
+                    }
                 }
                 else
                 {
-                    activeObject = hit.collider.gameObject;
-                    IselectAble selectedObject = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
-                    selectedObject.setSelect(true);
+                    if (activeObject != null)
+                    {
+                        IselectAble platform = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
+                        platform.setSelect(false);
+                        activeObject = null;
+                    }
                 }
             }
             else
             {
-                if(activeObject != null)
-                {
-                    IselectAble platform = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
-                    platform.setSelect(false);
-                    activeObject = null;
-                }
+                // menu element
             }
         }
     }
