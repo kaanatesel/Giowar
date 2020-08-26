@@ -56,18 +56,18 @@ public class Manager : MonoBehaviour
                     
                     if (Input.touchCount > 0)
                     {
-                        float distance = Vector2.Distance(activeObject.transform.position, touch.position);
+                        float distance = Vector3.Distance(activeObject.transform.position, pos);
                         Debug.Log(distance);
                         if (touch.phase == TouchPhase.Began
                            && willBuildObject != null
                            && touch.position.y > 30
                            && hit.collider == null
-                           && distance <= 330
+                           && distance <= 1.75f
                            )
                         {
                             Instantiate(willBuildObject, pos, Quaternion.identity);
                         }
-                        buildStateActive = false;
+                        //endBuildingState();
                     }
                 }
                 else {
@@ -95,8 +95,11 @@ public class Manager : MonoBehaviour
                             if (activeObject != null)
                             {
                                 IselectAble platform = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
-                                platform.setSelect(false);
-                                activeObject = null;
+                                if(platform != null)
+                                {
+                                    platform.setSelect(false);
+                                    activeObject = null;
+                                }
                             }
                         }
                     }
