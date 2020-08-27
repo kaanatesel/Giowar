@@ -1,12 +1,13 @@
 ﻿using Assets.Scripts;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlatformScript : MonoBehaviour, IselectAble
 {
     //Public Variables
     public GameObject itSelf;
     //Private Variables
-    private bool acvtive = false;
+    private bool acvtive;
     private Color color;
     //Draw Circle variables
     public float ThetaScale = 0.001f;
@@ -16,9 +17,12 @@ public class PlatformScript : MonoBehaviour, IselectAble
     private float Theta = 0f;
     private Color startColor, endColor;
 
+    
+
     // Start is called before the first frame update
     void Start()
     {
+        acvtive = false;    
         SpriteRenderer spriteRenderer = itSelf.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         color = spriteRenderer.color;
         startColor = Color.green;
@@ -31,22 +35,21 @@ public class PlatformScript : MonoBehaviour, IselectAble
     // Update is called once per frame
     void Update()
     {
-       
+        SpriteRenderer spriteRenderer = itSelf.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+        
         if (acvtive)
         {
-            SpriteRenderer spriteRenderer = itSelf.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
             spriteRenderer.color = Color.black;
             DrawCircle();
         }
         else
         {
-            SpriteRenderer spriteRenderer = itSelf.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
             spriteRenderer.color = color;
             LineDrawer.positionCount = 0;
         }
     }
-
-    void DrawCircle()
+    
+    private void DrawCircle()
     {
         Theta = 0f;
         Size = (int)((1f / ThetaScale) + 2f);

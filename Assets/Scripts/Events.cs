@@ -19,4 +19,9 @@ public class Events : MonoBehaviour
         manager.setBuildState(true);
         manager.buildPanel.SetActive(false);
     }
+    
+    public void endBuildingState()
+    {
+        manager.endBuildingState();
+    }
 }
