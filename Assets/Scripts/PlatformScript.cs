@@ -26,7 +26,7 @@ public class PlatformScript : MonoBehaviour, IselectAble
         SpriteRenderer spriteRenderer = itSelf.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         color = spriteRenderer.color;
         startColor = Color.green;
-        endColor = Color.black;
+        endColor = Color.green;
         LineDrawer = GetComponent<LineRenderer>();
         LineDrawer.material = new Material(Shader.Find("Sprites/Default"));
         LineDrawer.SetColors(startColor, endColor);

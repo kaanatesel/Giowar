@@ -14,6 +14,7 @@ public class Manager : MonoBehaviour
     public Text BuildStateText;
     public GameObject buildPanel;
     public GameObject willBuildObject;
+    public GameObject road;
     //Private Variables
     private GameObject activeObject;
     private bool buildStateActive;
@@ -69,7 +70,21 @@ public class Manager : MonoBehaviour
                        && distance <= 1.75f
                        )
                     {
-                        Instantiate(willBuildObject, pos, Quaternion.identity);
+                        GameObject newObj = Instantiate(willBuildObject, pos, Quaternion.identity);
+                        Vector2 rotationVector = new Vector2(
+                                activeObject.transform.position.x - newObj.transform.position.x,
+                                activeObject.transform.position.y - newObj.transform.position.y
+                            );
+                        newObj.transform.up = rotationVector;
+                        GameObject connetionRoad = Instantiate(road, activeObject.transform.position, Quaternion.identity);
+                        connetionRoad.transform.localScale += new Vector3(0, distance, 1);
+                        connetionRoad.transform.up = rotationVector;
+                        Vector3 roadPos = new Vector3(
+                            (newObj.transform.position.x + activeObject.transform.position.x) / 2,
+                            (newObj.transform.position.y + activeObject.transform.position.y) / 2,
+                            15f
+                            );
+                        connetionRoad.transform.position = roadPos;
                     }
                     endBuildingState();
                 }
