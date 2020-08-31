@@ -62,7 +62,9 @@ public class Manager : MonoBehaviour
                 else if (buildStateActive)
                 {
                     float distance = Vector3.Distance(activeObject.transform.position, pos);
-                    Debug.Log(distance);
+/*                    Debug.Log(distance);
+                    Debug.Log(activeObject.transform.position);
+                    Debug.Log(pos);*/
                     if (touch.phase == TouchPhase.Began
                        && willBuildObject != null
                        && touch.position.y > 30
