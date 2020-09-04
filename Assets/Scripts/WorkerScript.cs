@@ -9,6 +9,7 @@ public class WorkerScript : MonoBehaviour, ImoveAble
     // Private Variables
     private Vector3 moveDirection = new Vector3();
     private float speed;
+    private RoadScript roadMovingOn;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,15 +25,38 @@ public class WorkerScript : MonoBehaviour, ImoveAble
         }
         else
         {
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position,0.1f);
-            foreach(Collider colied in hitColliders)
+            if (transform.position == roadMovingOn.getBottomObject().transform.position)
             {
-                Debug.Log(colied.gameObject);
+                IcanHaveRoad haveRoad = roadMovingOn.getBottomObject().GetComponent(typeof(IcanHaveRoad)) as IcanHaveRoad;
+                RoadScript newRoad = haveRoad.getRoad();
+                roadMovingOn = newRoad;
+                if (moveDirection != newRoad.getTopObject().transform.position)
+                    moveDirection = newRoad.getTopObject().transform.position;
+                else
+                    moveDirection = haveRoad.getRoad().getBottomObject().transform.position;
+            }
+            else
+            {
+                IcanHaveRoad haveRoad = roadMovingOn.getTopObject().GetComponent(typeof(IcanHaveRoad)) as IcanHaveRoad;
+                RoadScript newRoad = haveRoad.getRoad();
+                roadMovingOn = newRoad;
+                if (moveDirection != newRoad.getBottomObject().transform.position)
+                    moveDirection = newRoad.getBottomObject().transform.position;
+                else
+                    moveDirection = newRoad.getTopObject().transform.position;
+                    
             }
         }
-        
     }
 
+    public RoadScript getRoadMovingOn()
+    {
+        return roadMovingOn;
+    }
+    public void setRoadMovingOn(RoadScript theRoad)
+    {
+        roadMovingOn = theRoad;
+    }
     public void setDirection(Vector3 dirVec)
     {
         moveDirection = dirVec;

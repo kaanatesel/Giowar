@@ -107,6 +107,8 @@ public class Manager : MonoBehaviour
                             );
                         connetionRoad.transform.position = roadPos;
                         RoadScript roadScript = connetionRoad.GetComponent(typeof(RoadScript)) as RoadScript;
+                        roadScript.setTopObject(newObj); // top object the builded object
+                        roadScript.setBottomObject(activeObject); //  bottom object platform
                         // Add road to new builded object
                         haveRoad.addRoad(roadScript);
                         // Adding roads to platformObject
