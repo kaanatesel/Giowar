@@ -10,6 +10,7 @@ namespace Assets.Scripts
     {
         void addRoad(RoadScript roadScript);
         RoadScript getRoad();
+        int getRoadCount();
 
     }
 }

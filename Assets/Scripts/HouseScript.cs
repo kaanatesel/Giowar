@@ -46,4 +46,11 @@ public class HouseScript : MonoBehaviour, IselectAble, IcanHaveRoad
     {
         return road;
     }
+    public int getRoadCount()
+    {
+        if (road == null)
+            return 0;
+        else
+            return 1;
+    }
 }

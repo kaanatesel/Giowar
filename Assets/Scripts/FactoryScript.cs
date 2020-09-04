@@ -1,4 +1,5 @@
-﻿using Assets.Scripts;
+﻿
+using Assets.Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +21,8 @@ public class FactoryScript : MonoBehaviour , IselectAble, IcanHaveRoad
     void Update()
     {
         if (active)
-            Debug.Log("FACROY IS ACTIVE");
+        { }
+            //Debug.Log("FACROY IS ACTIVE");
     }
     public bool isSelected()
     {
@@ -40,5 +42,13 @@ public class FactoryScript : MonoBehaviour , IselectAble, IcanHaveRoad
     public RoadScript getRoad()
     {
         return road;
+    }
+
+    public int getRoadCount()
+    {
+        if (road == null)
+            return 0;
+        else
+            return 1;
     }
 }

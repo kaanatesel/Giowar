@@ -22,10 +22,14 @@ public class PlatformScript : MonoBehaviour, IselectAble, IcanHaveRoad
     private const int maxRoadCapacity = 4;
     private List<RoadScript> roadList = new List<RoadScript>();
 
+    void Awake()
+    {
+        connetedRoadCount = 0;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        connetedRoadCount = 0;
         acvtive = false;    
         SpriteRenderer spriteRenderer = itSelf.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         color = spriteRenderer.color;
@@ -88,6 +92,11 @@ public class PlatformScript : MonoBehaviour, IselectAble, IcanHaveRoad
     {
         roadList.Add(road);
         connetedRoadCount += 1;
+    }
+
+    public int getRoadCount()
+    {
+        return connetedRoadCount;
     }
 
     public RoadScript getRoad()
