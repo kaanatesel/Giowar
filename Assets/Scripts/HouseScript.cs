@@ -2,14 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class FactoryScript : MonoBehaviour , IselectAble, IcanHaveRoad
+public class HouseScript : MonoBehaviour, IselectAble, IcanHaveRoad
 {
     // Public Variables
-    // Private Varibales
+    //Private Variables
     private bool active;
-    private RoadScript road;
-
+    public RoadScript road;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +20,12 @@ public class FactoryScript : MonoBehaviour , IselectAble, IcanHaveRoad
     void Update()
     {
         if (active)
-            Debug.Log("FACROY IS ACTIVE");
+        {
+            Debug.Log("house is active");
+        }
+        else
+        {
+        }
     }
     public bool isSelected()
     {

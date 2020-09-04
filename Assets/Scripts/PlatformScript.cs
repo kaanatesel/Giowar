@@ -1,8 +1,10 @@
 ﻿using Assets.Scripts;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlatformScript : MonoBehaviour, IselectAble
+public class PlatformScript : MonoBehaviour, IselectAble, IcanHaveRoad
 {
     //Public Variables
     public GameObject itSelf;
@@ -16,12 +18,14 @@ public class PlatformScript : MonoBehaviour, IselectAble
     private LineRenderer LineDrawer;
     private float Theta = 0f;
     private Color startColor, endColor;
-
-    
+    private int connetedRoadCount;
+    private const int maxRoadCapacity = 4;
+    private List<RoadScript> roadList = new List<RoadScript>();
 
     // Start is called before the first frame update
     void Start()
     {
+        connetedRoadCount = 0;
         acvtive = false;    
         SpriteRenderer spriteRenderer = itSelf.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         color = spriteRenderer.color;
@@ -75,4 +79,20 @@ public class PlatformScript : MonoBehaviour, IselectAble
         return acvtive;
     }
 
+    public bool canHaveMoreRoad()
+    {
+        return connetedRoadCount < maxRoadCapacity;
+    }
+
+    public void addRoad(RoadScript road)
+    {
+        roadList.Add(road);
+        connetedRoadCount += 1;
+    }
+
+    public RoadScript getRoad()
+    {
+        int rndInt = Random.Range(0, connetedRoadCount);
+        return roadList[rndInt];
+    }
 }

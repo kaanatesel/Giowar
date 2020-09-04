@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class Manager : MonoBehaviour
     //Public Variables
     public Button endBuildSate;
     public Button buildBtn;
+    public Button WorkerBtn;
     public Text BuildStateText;
     public GameObject buildPanel;
     public GameObject willBuildObject;
@@ -28,9 +30,20 @@ public class Manager : MonoBehaviour
     void Update()
     {
         if (activeObject != null && activeObject.tag == "Platform")
+        {
             buildBtn.interactable = true;
-        else
+            WorkerBtn.interactable = false;
+        }
+        else if (activeObject != null && activeObject.tag == "House")
+        {
+            WorkerBtn.interactable = true;
             buildBtn.interactable = false;
+        }
+        else
+        {
+            buildBtn.interactable = false;
+            WorkerBtn.interactable = false;
+        }
 
         if (buildStateActive)
         {
@@ -62,17 +75,23 @@ public class Manager : MonoBehaviour
                 else if (buildStateActive)
                 {
                     float distance = Vector3.Distance(activeObject.transform.position, pos);
-/*                    Debug.Log(distance);
-                    Debug.Log(activeObject.transform.position);
-                    Debug.Log(pos);*/
+                    PlatformScript platformScript = activeObject.GetComponent(typeof(PlatformScript)) as PlatformScript;
+                    /*Debug.Log(distance);
+                      Debug.Log(activeObject.transform.position);
+                      Debug.Log(pos);*/
                     if (touch.phase == TouchPhase.Began
                        && willBuildObject != null
                        && touch.position.y > 30
                        && hit.collider == null
                        && distance <= 1.75f
+                       && platformScript != null
+                       && platformScript.canHaveMoreRoad()
                        )
                     {
+
+
                         GameObject newObj = Instantiate(willBuildObject, pos, Quaternion.identity);
+                        IcanHaveRoad haveRoad = newObj.GetComponent(typeof(IcanHaveRoad)) as IcanHaveRoad;
                         Vector2 rotationVector = new Vector2(
                                 activeObject.transform.position.x - newObj.transform.position.x,
                                 activeObject.transform.position.y - newObj.transform.position.y
@@ -87,8 +106,19 @@ public class Manager : MonoBehaviour
                             15f
                             );
                         connetionRoad.transform.position = roadPos;
+                        RoadScript roadScript = connetionRoad.GetComponent(typeof(RoadScript)) as RoadScript;
+                        // Add road to new builded object
+                        haveRoad.addRoad(roadScript);
+                        // Adding roads to platformObject
+                        platformScript.addRoad(roadScript);
+                        if (newObj.tag == "Platform")
+                        {
+                            PlatformScript newPlattformScript = newObj.GetComponent(typeof(PlatformScript)) as PlatformScript;
+                            newPlattformScript.addRoad(roadScript);
+                        }
+
                     }
-                    endBuildingState();
+                     endBuildingState();
                 }
                 else
                 {
@@ -155,5 +185,10 @@ public class Manager : MonoBehaviour
         setBuildState(false);
         endBuildSate.gameObject.SetActive(false);
         BuildStateText.gameObject.SetActive(false);
+    }
+
+    public GameObject getActiveObject()
+    {
+        return activeObject;
     }
 }
