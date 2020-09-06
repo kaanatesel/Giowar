@@ -20,7 +20,15 @@ public class Events : MonoBehaviour
         manager.willBuildObject = obj;
         manager.setBuildState(true);
         manager.buildPanel.SetActive(false);
+        Debug.Log(obj.tag);
+        if (obj.tag == "Mine")
+        {
+            Debug.Log("asdgasd");
+            manager.openMinaralCircle();
+        }
+            
     }
+
     
     public void endBuildingState()
     {
@@ -36,5 +44,7 @@ public class Events : MonoBehaviour
         WorkerScript worker = newWorker.GetComponent(typeof(WorkerScript)) as WorkerScript;
         worker.setDirection(roadScript.getBottomObject().transform.position);
         worker.setRoadMovingOn(roadScript);
+
+
     }
 }

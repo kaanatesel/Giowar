@@ -7,9 +7,19 @@ using UnityEngine.UI;
 public class HouseScript : MonoBehaviour, IselectAble, IcanHaveRoad
 {
     // Public Variables
+    public RoadScript road;
     //Private Variables
     private bool active;
-    public RoadScript road;
+    private Color hightLightColor;
+    private Color orginalColor;
+
+    void Awake()
+    {
+        hightLightColor = new Color(91f/255, 186f/255, 202f/255);
+        SpriteRenderer spriteRenderer = GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+        orginalColor = spriteRenderer.material.color;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,12 +29,14 @@ public class HouseScript : MonoBehaviour, IselectAble, IcanHaveRoad
     // Update is called once per frame
     void Update()
     {
+        SpriteRenderer spriteRenderer = GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         if (active)
         {
-            Debug.Log("house is active");
+            spriteRenderer.material.color = hightLightColor;
         }
         else
         {
+            spriteRenderer.material.color = orginalColor;
         }
     }
     public bool isSelected()

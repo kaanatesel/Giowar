@@ -7,20 +7,19 @@ using UnityEngine.UI;
 public class PlatformScript : MonoBehaviour, IselectAble, IcanHaveRoad
 {
     //Public Variables
-    public GameObject itSelf;
     //Private Variables
     private bool acvtive;
-    private Color color;
+    private int connetedRoadCount;
+    private const int maxRoadCapacity = 4;
+    private List<RoadScript> roadList = new List<RoadScript>();
     //Draw Circle variables
     public float ThetaScale = 0.001f;
-    public float radius = 2f;
+    public float radius = 1.5f;
     private int Size;
     private LineRenderer LineDrawer;
     private float Theta = 0f;
     private Color startColor, endColor;
-    private int connetedRoadCount;
-    private const int maxRoadCapacity = 4;
-    private List<RoadScript> roadList = new List<RoadScript>();
+
 
     void Awake()
     {
@@ -31,28 +30,24 @@ public class PlatformScript : MonoBehaviour, IselectAble, IcanHaveRoad
     void Start()
     {
         acvtive = false;    
-        SpriteRenderer spriteRenderer = itSelf.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
-        color = spriteRenderer.color;
+        SpriteRenderer spriteRenderer = GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         startColor = Color.green;
         endColor = Color.green;
         LineDrawer = GetComponent<LineRenderer>();
         LineDrawer.material = new Material(Shader.Find("Sprites/Default"));
-        LineDrawer.SetColors(startColor, endColor);
+        LineDrawer.startColor = startColor;
+        LineDrawer.endColor = endColor;
     }
 
     // Update is called once per frame
     void Update()
     {
-        SpriteRenderer spriteRenderer = itSelf.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
-        
         if (acvtive)
         {
-            spriteRenderer.color = Color.black;
             DrawCircle();
         }
         else
         {
-            spriteRenderer.color = color;
             LineDrawer.positionCount = 0;
         }
     }
@@ -61,7 +56,7 @@ public class PlatformScript : MonoBehaviour, IselectAble, IcanHaveRoad
     {
         Theta = 0f;
         Size = (int)((1f / ThetaScale) + 2f);
-        LineDrawer.SetVertexCount(Size);
+        LineDrawer.positionCount = Size;
         for (int i = 0; i < Size; i++)
         {
             Theta += (2.0f * Mathf.PI * ThetaScale);

@@ -17,6 +17,7 @@ public class Manager : MonoBehaviour
     public GameObject buildPanel;
     public GameObject willBuildObject;
     public GameObject road;
+    public List<MinaralScript> minaralList;
     //Private Variables
     private GameObject activeObject;
     private bool buildStateActive;
@@ -76,7 +77,6 @@ public class Manager : MonoBehaviour
                 {
                     float distance = Vector3.Distance(activeObject.transform.position, pos);
                     PlatformScript platformScript = activeObject.GetComponent(typeof(PlatformScript)) as PlatformScript;
-                    Debug.Log("Platrorm  road count before new obj   " + platformScript.getRoadCount());
                     /*Debug.Log(distance);
                       Debug.Log(activeObject.transform.position);
                       Debug.Log(pos);*/
@@ -116,8 +116,11 @@ public class Manager : MonoBehaviour
                         haveRoad.addRoad(roadScript);
                         // Adding roads to platformObject
                         platformScript.addRoad(roadScript);
-                        Debug.Log("Platform road count   =  " + platformScript.getRoadCount() + "  platform can have more road  =  " + platformScript.canHaveMoreRoad());
-                        Debug.Log("new obj road count    =  " + haveRoad.getRoadCount());
+
+                        if(newObj.CompareTag("Mine"))
+                        {
+                            checkMineAndMinaralConnetion(newObj);
+                        }
                     }
                      endBuildingState();
                 }
@@ -186,10 +189,36 @@ public class Manager : MonoBehaviour
         setBuildState(false);
         endBuildSate.gameObject.SetActive(false);
         BuildStateText.gameObject.SetActive(false);
+        closeMinaralCircle();
     }
 
     public GameObject getActiveObject()
     {
         return activeObject;
+    }
+
+    public void openMinaralCircle()
+    {
+        if (minaralList.Count > 0)
+        {
+            foreach (MinaralScript ms in minaralList)
+                ms.setBuildStateActive(true);
+        }
+    }
+    public void closeMinaralCircle()
+    {
+        if (minaralList.Count > 0)
+        {
+            foreach (MinaralScript ms in minaralList)
+                ms.setBuildStateActive(false);
+        }
+    }
+    public void checkMineAndMinaralConnetion(GameObject obj)
+    {
+        if (minaralList.Count > 0)
+        {
+            foreach (MinaralScript ms in minaralList)
+                ms.setMine(obj);
+        }
     }
 }

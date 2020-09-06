@@ -10,7 +10,16 @@ public class FactoryScript : MonoBehaviour , IselectAble, IcanHaveRoad
     // Private Varibales
     private bool active;
     private RoadScript road;
+    private Color hightLightColor;
+    private Color orginalColor;
 
+
+    void Awake()
+    {
+        hightLightColor = new Color(202f / 255, 202f / 255, 83f / 255);
+        SpriteRenderer spriteRenderer = GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+        orginalColor = spriteRenderer.material.color;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -20,9 +29,15 @@ public class FactoryScript : MonoBehaviour , IselectAble, IcanHaveRoad
     // Update is called once per frame
     void Update()
     {
+        SpriteRenderer spriteRenderer = GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         if (active)
-        { }
-            //Debug.Log("FACROY IS ACTIVE");
+        {
+            spriteRenderer.material.color = hightLightColor;
+        }
+        else
+        {
+            spriteRenderer.material.color = orginalColor;
+        }
     }
     public bool isSelected()
     {
