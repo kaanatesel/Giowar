@@ -10,7 +10,6 @@ public class MineScript : MonoBehaviour, IselectAble, IcanHaveRoad
     private bool active;
     private RoadScript road;
 
-
     // Start is called before the first frame update
     void Start()
     {

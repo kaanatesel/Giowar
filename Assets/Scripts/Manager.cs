@@ -10,6 +10,7 @@ using UnityEngineInternal;
 public class Manager : MonoBehaviour
 {
     //Public Variables
+    public GameObject resourceManager;
     public Button endBuildSate;
     public Button buildBtn;
     public Button WorkerBtn;
@@ -21,10 +22,20 @@ public class Manager : MonoBehaviour
     //Private Variables
     private GameObject activeObject;
     private bool buildStateActive;
+    private ResourceManagerScript resourceManagerScript;
+    // Resource production Variables
+    private int goldIncomePerMine;
+
+    void Awake()
+    {
+        resourceManagerScript = resourceManager.GetComponent(typeof(ResourceManagerScript)) as ResourceManagerScript;
+        goldIncomePerMine = 1;
+    }
     void Start()
     {
         activeObject = null;
         buildStateActive = false;
+        InvokeRepeating("updateGold", 5.0f, 7.0f);
     }
 
     //Update is called once per frame
@@ -221,4 +232,20 @@ public class Manager : MonoBehaviour
                 ms.setMine(obj);
         }
     }
+
+    public void updateGold()
+    {
+        // Active Mine Count
+        int activeMineCount = 0;
+        if (minaralList.Count > 0)
+        {
+            foreach (MinaralScript ms in minaralList)
+                if (ms.isBeingDig())
+                    activeMineCount += 1;
+        }
+
+        // Update Resource
+        resourceManagerScript.updateGoldCount(activeMineCount * goldIncomePerMine);
+    }
+
 }

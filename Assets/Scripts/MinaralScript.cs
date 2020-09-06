@@ -6,9 +6,10 @@ using UnityEngine;
 public class MinaralScript : MonoBehaviour, IselectAble
 {
     //Public Variables
-    public GameObject road;    
+    public GameObject road;
     //Private Variables
     private bool active;
+    private bool beingDig;
     private bool isBuildState;
     private MineScript mine;
     private RoadScript mineRoad;
@@ -24,6 +25,7 @@ public class MinaralScript : MonoBehaviour, IselectAble
     {
         active = false;
         isBuildState = false;
+        beingDig = false;
 
         SpriteRenderer spriteRenderer = GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         startColor = Color.red;
@@ -93,14 +95,21 @@ public class MinaralScript : MonoBehaviour, IselectAble
             );
             newMineRoad.transform.position = roadPos;
 
-            RoadScript roadScript = newMineRoad.GetComponent(typeof(RoadScript)) as RoadScript;
+            MinaralMineRoad roadScript = newMineRoad.GetComponent(typeof(MinaralMineRoad)) as MinaralMineRoad;
             // Set Road variables
             roadScript.setTopObject(obj); // top object the builded object
-            //roadScript.setBottomObject(this); //  bottom object platform
+            roadScript.setBottomObject(gameObject); //  bottom object platform
+            roadScript.connetedToMine();
             mineRoad = roadScript;
+            beingDig = true;
+            // Set mine's mineRoad variable
+            //mine.setMineRoad(roadScript);
         }
     }
-
+    public bool isBeingDig()
+    {
+        return beingDig;
+    }
     public void setBuildStateActive(bool newState)
     {
         isBuildState = newState;

@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20041a1d26087884292d69b7d4e8e18d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  road: {fileID: 4022221647885837939, guid: fc49b4902155de84d95ff9e75d311da8, type: 3}
+  road: {fileID: 5712662128708088677, guid: 0db3b937709d1b94eabe84236900fcd1, type: 3}
   ThetaScale: 0.001
   radius: 1.5
 --- !u!120 &4873411832640224412

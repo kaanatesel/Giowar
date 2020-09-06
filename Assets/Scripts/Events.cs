@@ -20,13 +20,10 @@ public class Events : MonoBehaviour
         manager.willBuildObject = obj;
         manager.setBuildState(true);
         manager.buildPanel.SetActive(false);
-        Debug.Log(obj.tag);
         if (obj.tag == "Mine")
         {
-            Debug.Log("asdgasd");
             manager.openMinaralCircle();
         }
-            
     }
 
     

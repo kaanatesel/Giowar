@@ -7,9 +7,9 @@ public class WorkerScript : MonoBehaviour, ImoveAble
 {
 
     // Private Variables
-    private Vector3 moveDirection = new Vector3();
-    private float speed;
-    private RoadScript roadMovingOn;
+    protected Vector3 moveDirection = new Vector3();
+    protected float speed;
+    protected RoadScript roadMovingOn;
     // Start is called before the first frame update
     void Start()
     {
