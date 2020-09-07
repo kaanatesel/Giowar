@@ -18,8 +18,7 @@ public class Manager : MonoBehaviour
     public GameObject buildPanel;
     public GameObject willBuildObject;
     public GameObject road;
-    public List<MinaralScript> minaralList;
-    public List<MinaralScript> goldMinaralList;
+    public List<MinaralScript> resourceList;
     //Private Variables
     private GameObject activeObject;
     private bool buildStateActive;
@@ -27,19 +26,23 @@ public class Manager : MonoBehaviour
     // Resource production Variables
     private int goldIncomePerMine;
     private int minaralIncomePerMine;
+    private float goldIncomeSec;
+    private float minaralIncomeSec;
 
     void Awake()
     {
         resourceManagerScript = resourceManager.GetComponent(typeof(ResourceManagerScript)) as ResourceManagerScript;
         goldIncomePerMine = 1;
         minaralIncomePerMine = 1;
+        goldIncomeSec = 5.0f;
+        minaralIncomeSec = 3.0f;
     }
     void Start()
     {
         activeObject = null;
         buildStateActive = false;
-        InvokeRepeating("updateGold", 5.0f, 7.0f);
-        InvokeRepeating("updateMinaral", 3.0f, 7.0f);
+        InvokeRepeating("updateGold", goldIncomeSec, 7.0f);
+        InvokeRepeating("updateMinaral", minaralIncomeSec, 7.0f);
     }
 
     //Update is called once per frame
@@ -214,25 +217,25 @@ public class Manager : MonoBehaviour
 
     public void openMinaralCircle()
     {
-        if (minaralList.Count > 0)
+        if (resourceList.Count > 0)
         {
-            foreach (MinaralScript ms in minaralList)
+            foreach (MinaralScript ms in resourceList)
                 ms.setBuildStateActive(true);
         }
     }
     public void closeMinaralCircle()
     {
-        if (minaralList.Count > 0)
+        if (resourceList.Count > 0)
         {
-            foreach (MinaralScript ms in minaralList)
+            foreach (MinaralScript ms in resourceList)
                 ms.setBuildStateActive(false);
         }
     }
     public void checkMineAndMinaralConnetion(GameObject obj)
     {
-        if (minaralList.Count > 0)
+        if (resourceList.Count > 0)
         {
-            foreach (MinaralScript ms in minaralList)
+            foreach (MinaralScript ms in resourceList)
                 ms.setMine(obj);
         }
     }
@@ -240,10 +243,10 @@ public class Manager : MonoBehaviour
     public void updateMinaral()
     {
         int activeMinaralCount = 0;
-        if(minaralList.Count > 0)
+        if(resourceList.Count > 0)
         {
-            foreach (MinaralScript ms in minaralList)
-                if (ms.isBeingDig())
+            foreach (MinaralScript ms in resourceList)
+                if (ms.isBeingDig() && ms.gameObject.CompareTag("minaralMine"))
                     activeMinaralCount += 1;
         }
 
@@ -254,10 +257,10 @@ public class Manager : MonoBehaviour
     {
         // Active Mine Count
         int activeMineCount = 0;
-        if (goldMinaralList.Count > 0)
+        if (resourceList.Count > 0)
         {
-            foreach (MinaralScript ms in goldMinaralList)
-                if (ms.isBeingDig())
+            foreach (MinaralScript ms in resourceList)
+                if (ms.isBeingDig() && ms.gameObject.CompareTag("goldMine"))
                     activeMineCount += 1;
         }
 
