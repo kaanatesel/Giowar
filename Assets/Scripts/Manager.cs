@@ -19,23 +19,27 @@ public class Manager : MonoBehaviour
     public GameObject willBuildObject;
     public GameObject road;
     public List<MinaralScript> minaralList;
+    public List<MinaralScript> goldMinaralList;
     //Private Variables
     private GameObject activeObject;
     private bool buildStateActive;
     private ResourceManagerScript resourceManagerScript;
     // Resource production Variables
     private int goldIncomePerMine;
+    private int minaralIncomePerMine;
 
     void Awake()
     {
         resourceManagerScript = resourceManager.GetComponent(typeof(ResourceManagerScript)) as ResourceManagerScript;
         goldIncomePerMine = 1;
+        minaralIncomePerMine = 1;
     }
     void Start()
     {
         activeObject = null;
         buildStateActive = false;
         InvokeRepeating("updateGold", 5.0f, 7.0f);
+        InvokeRepeating("updateMinaral", 3.0f, 7.0f);
     }
 
     //Update is called once per frame
@@ -233,13 +237,26 @@ public class Manager : MonoBehaviour
         }
     }
 
+    public void updateMinaral()
+    {
+        int activeMinaralCount = 0;
+        if(minaralList.Count > 0)
+        {
+            foreach (MinaralScript ms in minaralList)
+                if (ms.isBeingDig())
+                    activeMinaralCount += 1;
+        }
+
+        resourceManagerScript.updateMinaralCount(activeMinaralCount * minaralIncomePerMine);
+    }
+
     public void updateGold()
     {
         // Active Mine Count
         int activeMineCount = 0;
-        if (minaralList.Count > 0)
+        if (goldMinaralList.Count > 0)
         {
-            foreach (MinaralScript ms in minaralList)
+            foreach (MinaralScript ms in goldMinaralList)
                 if (ms.isBeingDig())
                     activeMineCount += 1;
         }
