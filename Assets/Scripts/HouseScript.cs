@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HouseScript : MonoBehaviour, IselectAble, IcanHaveRoad
+public class HouseScript : MonoBehaviour, IselectAble, IcanHaveRoad, IBuyAble
 {
     // Public Variables
     public RoadScript road;
@@ -12,6 +12,9 @@ public class HouseScript : MonoBehaviour, IselectAble, IcanHaveRoad
     private bool active;
     private Color hightLightColor;
     private Color orginalColor;
+    // Price
+    private static int goldPrice =  4;
+    private int minaralPrice = 4;
 
     void Awake()
     {
@@ -64,5 +67,14 @@ public class HouseScript : MonoBehaviour, IselectAble, IcanHaveRoad
             return 0;
         else
             return 1;
+    }
+    public int getGoldPrice()
+    {
+        return goldPrice;
+    }
+
+    public int getMinaralPrice()
+    {
+        return minaralPrice;
     }
 }

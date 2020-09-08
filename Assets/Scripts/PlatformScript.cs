@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlatformScript : MonoBehaviour, IselectAble, IcanHaveRoad
+
+public class PlatformScript : MonoBehaviour, IselectAble, IcanHaveRoad, IBuyAble
 {
     //Public Variables
     //Private Variables
@@ -19,6 +20,9 @@ public class PlatformScript : MonoBehaviour, IselectAble, IcanHaveRoad
     private LineRenderer LineDrawer;
     private float Theta = 0f;
     private Color startColor, endColor;
+    // Price
+    private static int goldPrice = 2;
+    private static int minaralPrice = 2;
 
 
     void Awake()
@@ -98,5 +102,15 @@ public class PlatformScript : MonoBehaviour, IselectAble, IcanHaveRoad
     {
         int rndInt = Random.Range(0, connetedRoadCount);
         return roadList[rndInt];
+    }
+
+    public int getGoldPrice()
+    {
+        return goldPrice;
+    }
+
+    public int getMinaralPrice()
+    {
+        return minaralPrice;
     }
 }

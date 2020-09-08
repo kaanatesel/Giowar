@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FactoryScript : MonoBehaviour , IselectAble, IcanHaveRoad
+public class FactoryScript : MonoBehaviour , IselectAble, IcanHaveRoad, IBuyAble
 {
     // Public Variables
     // Private Varibales
@@ -12,6 +12,9 @@ public class FactoryScript : MonoBehaviour , IselectAble, IcanHaveRoad
     private RoadScript road;
     private Color hightLightColor;
     private Color orginalColor;
+    // Prive
+    private static int goldPrice = 5;
+    private static int minaralPrice = 11;
 
 
     void Awake()
@@ -19,11 +22,13 @@ public class FactoryScript : MonoBehaviour , IselectAble, IcanHaveRoad
         hightLightColor = new Color(202f / 255, 202f / 255, 83f / 255);
         SpriteRenderer spriteRenderer = GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         orginalColor = spriteRenderer.material.color;
+
     }
     // Start is called before the first frame update
     void Start()
     {
         active = false;
+
     }
 
     // Update is called once per frame
@@ -65,5 +70,14 @@ public class FactoryScript : MonoBehaviour , IselectAble, IcanHaveRoad
             return 0;
         else
             return 1;
+    }
+    public int getGoldPrice()
+    {
+        return goldPrice;
+    }
+
+    public int getMinaralPrice()
+    {
+        return minaralPrice;
     }
 }

@@ -2,21 +2,25 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ResourceManagerScript : MonoBehaviour
 {
     //Public Variables
     public TextMeshProUGUI goldText;
     public TextMeshProUGUI minaralText;
+    public TextMeshProUGUI populationText;
     //Private Variables
     private int gold;
     private int mineral;
+    private int populationCurrent;
+    private int populationMax;
 
     void Awake()
     {
-        gold = 0;
-        mineral = 0;
+        gold = 50;
+        mineral = 50;
+        populationCurrent = 0;
+        populationMax = 5;
     }
     // Start is called before the first frame update
     void Start()
@@ -29,6 +33,7 @@ public class ResourceManagerScript : MonoBehaviour
     {
         goldText.text = "<sprite index=0> :" + gold;
         minaralText.SetText("<sprite index=1> :" + mineral);
+        populationText.SetText("<sprite index=2> :" + populationCurrent + " / " + populationMax);
     }
 
     public void updateMinaralCount(int change)
@@ -46,5 +51,31 @@ public class ResourceManagerScript : MonoBehaviour
     public int getGold()
     {
         return gold;
+    }
+    public void updateCurrentPopulationCount(int change)
+    {
+        populationCurrent += change;
+    }
+    public int getCurrentPopulation()
+    {
+        return populationCurrent;
+    }
+    public void updateMaxPopulationCount(int change)
+    {
+        populationMax += change;
+    }
+    public int getMaxPopulation()
+    {
+        return populationMax;
+    }
+
+    public bool canBuy(int goldAmount, int mineralAmount)
+    {
+        return gold > goldAmount && mineral > mineralAmount;
+    }
+    public void buyBuilding(int goldAmount, int minaralAmount)
+    {
+        gold -= goldAmount;
+        mineral -= minaralAmount;
     }
 }

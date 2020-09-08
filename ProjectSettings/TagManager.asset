@@ -8,6 +8,8 @@ TagManager:
   - Factory
   - House
   - Mine
+  - goldMine
+  - minaralMine
   layers:
   - Default
   - TransparentFX

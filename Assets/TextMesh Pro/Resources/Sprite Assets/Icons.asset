@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!21 &-1652852054054189814
+--- !u!21 &-5192715704605792397
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 1
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: Icons
   m_EditorClassIdentifier: 
   hashCode: 83117176
-  material: {fileID: -1652852054054189814}
+  material: {fileID: -5192715704605792397}
   materialHashCode: 0
   m_Version: 1.1.0
   m_FaceInfo:
@@ -77,14 +77,14 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 0
     m_Scale: 1
-    m_Name: gold
-    m_HashCode: 3668640
+    m_Name: Icons_0
+    m_HashCode: 320288823
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 1
     m_Scale: 1
-    m_Name: minaral
-    m_HashCode: -1961824364
+    m_Name: Icons_1
+    m_HashCode: 320288822
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 2
@@ -94,51 +94,50 @@ MonoBehaviour:
   m_SpriteGlyphTable:
   - m_Index: 0
     m_Metrics:
-      m_Width: 512
-      m_Height: 512
+      m_Width: 516
+      m_Height: 516
       m_HorizontalBearingX: -0
       m_HorizontalBearingY: 0
-      m_HorizontalAdvance: 512
+      m_HorizontalAdvance: 516
     m_GlyphRect:
-      m_X: 0
-      m_Y: 568
-      m_Width: 512
-      m_Height: 512
+      m_X: 2
+      m_Y: 564
+      m_Width: 516
+      m_Height: 516
     m_Scale: 1
     m_AtlasIndex: 0
-    sprite: {fileID: -5939463070795172742, guid: f653cea57c9922246aee97df6cd30951,
+    sprite: {fileID: 1161201145128540330, guid: f653cea57c9922246aee97df6cd30951,
       type: 3}
   - m_Index: 1
     m_Metrics:
-      m_Width: 512
-      m_Height: 512
+      m_Width: 516
+      m_Height: 516
       m_HorizontalBearingX: -0
       m_HorizontalBearingY: 0
-      m_HorizontalAdvance: 512
+      m_HorizontalAdvance: 516
     m_GlyphRect:
-      m_X: 512
-      m_Y: 568
-      m_Width: 512
-      m_Height: 512
+      m_X: 516
+      m_Y: 564
+      m_Width: 516
+      m_Height: 516
     m_Scale: 1
     m_AtlasIndex: 0
-    sprite: {fileID: 6725019411808010661, guid: f653cea57c9922246aee97df6cd30951,
+    sprite: {fileID: 2130535880278150251, guid: f653cea57c9922246aee97df6cd30951,
       type: 3}
   - m_Index: 2
     m_Metrics:
-      m_Width: 512
-      m_Height: 512
+      m_Width: 516
+      m_Height: 516
       m_HorizontalBearingX: -0
       m_HorizontalBearingY: 0
-      m_HorizontalAdvance: 512
+      m_HorizontalAdvance: 516
     m_GlyphRect:
-      m_X: 1024
-      m_Y: 568
-      m_Width: 512
-      m_Height: 512
+      m_X: 1032
+      m_Y: 564
+      m_Width: 516
+      m_Height: 516
     m_Scale: 1
     m_AtlasIndex: 0
-    sprite: {fileID: -3917391801751258802, guid: f653cea57c9922246aee97df6cd30951,
-      type: 3}
+    sprite: {fileID: 184950751378207249, guid: f653cea57c9922246aee97df6cd30951, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []

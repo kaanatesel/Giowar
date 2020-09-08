@@ -6,6 +6,7 @@ using UnityEngine;
 public class Events : MonoBehaviour
 {
     public Manager manager;
+    public ResourceManagerScript resourceManager;
     public GameObject Worker;
     public void openBuildPanel()
     {
@@ -25,7 +26,6 @@ public class Events : MonoBehaviour
             manager.openMinaralCircle();
         }
     }
-
     
     public void endBuildingState()
     {
@@ -41,7 +41,5 @@ public class Events : MonoBehaviour
         WorkerScript worker = newWorker.GetComponent(typeof(WorkerScript)) as WorkerScript;
         worker.setDirection(roadScript.getBottomObject().transform.position);
         worker.setRoadMovingOn(roadScript);
-
-
     }
 }

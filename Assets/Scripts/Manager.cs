@@ -107,37 +107,48 @@ public class Manager : MonoBehaviour
                        && platformScript.canHaveMoreRoad()
                        )
                     {
-                        GameObject newObj = Instantiate(willBuildObject, pos, Quaternion.identity);
-                        IcanHaveRoad haveRoad = newObj.GetComponent(typeof(IcanHaveRoad)) as IcanHaveRoad;
-                        // rotate new object face to the platform
-                        Vector2 rotationVector = new Vector2(
-                                activeObject.transform.position.x - newObj.transform.position.x,
-                                activeObject.transform.position.y - newObj.transform.position.y
-                            );
-                        newObj.transform.up = rotationVector;
-                        // Create road
-                        GameObject connetionRoad = Instantiate(road, activeObject.transform.position, Quaternion.identity);
-                        // rotate and scale the road between newObj and platform
-                        connetionRoad.transform.localScale += new Vector3(0, distance, 1);
-                        connetionRoad.transform.up = rotationVector;
-                        Vector3 roadPos = new Vector3(
-                            (newObj.transform.position.x + activeObject.transform.position.x) / 2,
-                            (newObj.transform.position.y + activeObject.transform.position.y) / 2,
-                            15f
-                            );
-                        connetionRoad.transform.position = roadPos;
-                        RoadScript roadScript = connetionRoad.GetComponent(typeof(RoadScript)) as RoadScript;
-                        // Set Road variables
-                        roadScript.setTopObject(newObj); // top object the builded object
-                        roadScript.setBottomObject(activeObject); //  bottom object platform
-                        // Add road to new builded object
-                        haveRoad.addRoad(roadScript);
-                        // Adding roads to platformObject
-                        platformScript.addRoad(roadScript);
-
-                        if(newObj.CompareTag("Mine"))
+                        
+                        IBuyAble buyAble = willBuildObject.GetComponent(typeof(IBuyAble)) as IBuyAble;
+                        if (buyAble != null && resourceManagerScript.canBuy(buyAble.getGoldPrice(),buyAble.getMinaralPrice()))
                         {
-                            checkMineAndMinaralConnetion(newObj);
+                            GameObject newObj = Instantiate(willBuildObject, pos, Quaternion.identity);
+                            IcanHaveRoad haveRoad = newObj.GetComponent(typeof(IcanHaveRoad)) as IcanHaveRoad;
+                            // rotate new object face to the platform
+                            Vector2 rotationVector = new Vector2(
+                                    activeObject.transform.position.x - newObj.transform.position.x,
+                                    activeObject.transform.position.y - newObj.transform.position.y
+                                );
+                            newObj.transform.up = rotationVector;
+                            // Create road
+                            GameObject connetionRoad = Instantiate(road, activeObject.transform.position, Quaternion.identity);
+                            // rotate and scale the road between newObj and platform
+                            connetionRoad.transform.localScale += new Vector3(0, distance, 1);
+                            connetionRoad.transform.up = rotationVector;
+                            Vector3 roadPos = new Vector3(
+                                (newObj.transform.position.x + activeObject.transform.position.x) / 2,
+                                (newObj.transform.position.y + activeObject.transform.position.y) / 2,
+                                15f
+                                );
+                            connetionRoad.transform.position = roadPos;
+                            RoadScript roadScript = connetionRoad.GetComponent(typeof(RoadScript)) as RoadScript;
+                            // Set Road variables
+                            roadScript.setTopObject(newObj); // top object the builded object
+                            roadScript.setBottomObject(activeObject); //  bottom object platform
+                                                                      // Add road to new builded object
+                            haveRoad.addRoad(roadScript);
+                            // Adding roads to platformObject
+                            platformScript.addRoad(roadScript);
+
+                            if (newObj.CompareTag("Mine"))
+                            {
+                                checkMineAndMinaralConnetion(newObj);
+                            }
+                            // Buy the building
+                            resourceManagerScript.buyBuilding(buyAble.getGoldPrice(), buyAble.getGoldPrice());
+                        }
+                        else
+                        {
+                            Debug.Log("you cant buy");
                         }
                     }
                      endBuildingState();
@@ -267,5 +278,4 @@ public class Manager : MonoBehaviour
         // Update Resource
         resourceManagerScript.updateGoldCount(activeMineCount * goldIncomePerMine);
     }
-
 }
