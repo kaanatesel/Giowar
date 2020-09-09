@@ -19,12 +19,13 @@ public class Manager : MonoBehaviour
     public GameObject willBuildObject;
     public GameObject road;
     public List<MinaralScript> resourceList;
-    public Camera mainCamera;
     //Private Variables
     private GameObject activeObject;
     private bool buildStateActive;
     private ResourceManagerScript resourceManagerScript;
     private float cameraMoveSpeed;
+    private float zoomOutMin = 2;
+    private float zoomOutMax = 30;
     // Resource production Variables
     private int goldIncomePerMine;
     private int minaralIncomePerMine;
@@ -34,6 +35,8 @@ public class Manager : MonoBehaviour
     private Vector3 fp;   //First touch position
     private Vector3 lp;   //Last touch position
     private float dragDistance; // how much does the player moved his finger    
+    private Vector3 fpS;
+    private Vector3 lpS;
 
     void Awake()
     {
@@ -82,8 +85,23 @@ public class Manager : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(Input.touchCount == 2)
+        {
+            Touch touch0 = Input.GetTouch(0);
+            Touch touch1 = Input.GetTouch(1);
 
-        if (Input.touchCount > 0)
+            Vector2 touch0PrevPos = touch0.position - touch0.deltaPosition;            
+            Vector2 touch1PrevPos = touch1.position - touch1.deltaPosition;
+
+            float prevMagnitude = (touch0PrevPos - touch1PrevPos).magnitude;
+            float curMagnitude = (touch0.position - touch1.position).magnitude;
+
+            float distance = curMagnitude - prevMagnitude;
+            float moveDist = distance * 0.01f;
+
+            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - moveDist, zoomOutMin, zoomOutMax);
+        }
+        else if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
             Vector2 pos = Camera.main.ScreenToWorldPoint(touch.position);
@@ -157,7 +175,6 @@ public class Manager : MonoBehaviour
             }
             else if (touch.phase == TouchPhase.Began) //check for the first touch
             {
-                
                 fp = Camera.main.ScreenToWorldPoint(touch.position);
                 lp = Camera.main.ScreenToWorldPoint(touch.position);
             }
@@ -165,7 +182,7 @@ public class Manager : MonoBehaviour
             {
                 lp = Camera.main.ScreenToWorldPoint(touch.position);
                 Vector3 camMovePos = lp - fp;
-                mainCamera.transform.position += -camMovePos * Time.deltaTime * cameraMoveSpeed;
+                Camera.main.transform.position += -camMovePos * Time.deltaTime * cameraMoveSpeed;
             }
             else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
             {
@@ -173,7 +190,7 @@ public class Manager : MonoBehaviour
                 if (Mathf.Abs(lp.x - fp.x) > dragDistance || Mathf.Abs(lp.y - fp.y) > dragDistance)
                 {
                     Vector3 camMovePos = lp - fp;
-                    mainCamera.transform.position += -camMovePos * Time.deltaTime * cameraMoveSpeed;
+                    Camera.main.transform.position += -camMovePos * Time.deltaTime * cameraMoveSpeed;
                 }
                 else
                 {
