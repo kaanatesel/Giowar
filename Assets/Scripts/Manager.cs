@@ -77,6 +77,7 @@ public class Manager : MonoBehaviour
 
         if (Input.touchCount > 0)
         {
+            print(Input.touchCount);
             Touch touch = Input.GetTouch(0);
             Vector2 pos = Camera.main.ScreenToWorldPoint(touch.position);
             RaycastHit2D hit = Physics2D.Raycast(pos, Camera.main.transform.forward);
@@ -143,6 +144,11 @@ public class Manager : MonoBehaviour
                             {
                                 checkMineAndMinaralConnetion(newObj);
                             }
+                            if(newObj.CompareTag("House"))
+                            {
+                                resourceManagerScript.updateMaxPopulationCount(5);
+                            }
+
                             // Buy the building
                             resourceManagerScript.buyBuilding(buyAble.getGoldPrice(), buyAble.getGoldPrice());
                         }
