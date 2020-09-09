@@ -76,7 +76,7 @@ MonoBehaviour:
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 0
-    m_Scale: 1
+    m_Scale: 2
     m_Name: Icons_0
     m_HashCode: 320288823
   - m_ElementType: 2
@@ -97,14 +97,14 @@ MonoBehaviour:
       m_Width: 516
       m_Height: 516
       m_HorizontalBearingX: -0
-      m_HorizontalBearingY: 0
+      m_HorizontalBearingY: 400
       m_HorizontalAdvance: 516
     m_GlyphRect:
       m_X: 2
       m_Y: 564
       m_Width: 516
       m_Height: 516
-    m_Scale: 1
+    m_Scale: 0.44
     m_AtlasIndex: 0
     sprite: {fileID: 1161201145128540330, guid: f653cea57c9922246aee97df6cd30951,
       type: 3}
@@ -113,7 +113,7 @@ MonoBehaviour:
       m_Width: 516
       m_Height: 516
       m_HorizontalBearingX: -0
-      m_HorizontalBearingY: 0
+      m_HorizontalBearingY: 400
       m_HorizontalAdvance: 516
     m_GlyphRect:
       m_X: 516
@@ -129,7 +129,7 @@ MonoBehaviour:
       m_Width: 516
       m_Height: 516
       m_HorizontalBearingX: -0
-      m_HorizontalBearingY: 0
+      m_HorizontalBearingY: 400
       m_HorizontalAdvance: 516
     m_GlyphRect:
       m_X: 1032

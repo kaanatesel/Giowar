@@ -19,15 +19,21 @@ public class Manager : MonoBehaviour
     public GameObject willBuildObject;
     public GameObject road;
     public List<MinaralScript> resourceList;
+    public Camera mainCamera;
     //Private Variables
     private GameObject activeObject;
     private bool buildStateActive;
     private ResourceManagerScript resourceManagerScript;
+    private float cameraMoveSpeed;
     // Resource production Variables
     private int goldIncomePerMine;
     private int minaralIncomePerMine;
     private float goldIncomeSec;
     private float minaralIncomeSec;
+    // Touch Variable
+    private Vector3 fp;   //First touch position
+    private Vector3 lp;   //Last touch position
+    private float dragDistance; // how much does the player moved his finger    
 
     void Awake()
     {
@@ -36,6 +42,7 @@ public class Manager : MonoBehaviour
         minaralIncomePerMine = 1;
         goldIncomeSec = 5.0f;
         minaralIncomeSec = 3.0f;
+        cameraMoveSpeed = 10;
     }
     void Start()
     {
@@ -43,6 +50,7 @@ public class Manager : MonoBehaviour
         buildStateActive = false;
         InvokeRepeating("updateGold", goldIncomeSec, 7.0f);
         InvokeRepeating("updateMinaral", minaralIncomeSec, 7.0f);
+        dragDistance = 0.05f;
     }
 
     //Update is called once per frame
@@ -77,125 +85,148 @@ public class Manager : MonoBehaviour
 
         if (Input.touchCount > 0)
         {
-            print(Input.touchCount);
             Touch touch = Input.GetTouch(0);
             Vector2 pos = Camera.main.ScreenToWorldPoint(touch.position);
             RaycastHit2D hit = Physics2D.Raycast(pos, Camera.main.transform.forward);
 
-            if (EventSystem.current.IsPointerOverGameObject() && buildPanel.activeSelf)
+            if (buildStateActive)
             {
-                Debug.Log("on game object");
-            }
-            else
-            {
-                if(buildPanel.activeSelf)
+                float distance = Vector3.Distance(activeObject.transform.position, pos);
+                PlatformScript platformScript = activeObject.GetComponent(typeof(PlatformScript)) as PlatformScript;
+                /*Debug.Log(distance);
+                  Debug.Log(activeObject.transform.position);
+                  Debug.Log(pos);*/
+                if (touch.phase == TouchPhase.Began
+                   && willBuildObject != null
+                   && touch.position.y > 30
+                   && hit.collider == null
+                   && distance <= 1.75f
+                   && platformScript != null
+                   && platformScript.canHaveMoreRoad()
+                   )
                 {
-                    buildPanel.SetActive(false);
-                }
-                else if (buildStateActive)
-                {
-                    float distance = Vector3.Distance(activeObject.transform.position, pos);
-                    PlatformScript platformScript = activeObject.GetComponent(typeof(PlatformScript)) as PlatformScript;
-                    /*Debug.Log(distance);
-                      Debug.Log(activeObject.transform.position);
-                      Debug.Log(pos);*/
-                    if (touch.phase == TouchPhase.Began
-                       && willBuildObject != null
-                       && touch.position.y > 30
-                       && hit.collider == null
-                       && distance <= 1.75f
-                       && platformScript != null
-                       && platformScript.canHaveMoreRoad()
-                       )
+                    IBuyAble buyAble = willBuildObject.GetComponent(typeof(IBuyAble)) as IBuyAble;
+                    if (buyAble != null && resourceManagerScript.canBuy(buyAble.getGoldPrice(), buyAble.getMinaralPrice()))
                     {
-                        
-                        IBuyAble buyAble = willBuildObject.GetComponent(typeof(IBuyAble)) as IBuyAble;
-                        if (buyAble != null && resourceManagerScript.canBuy(buyAble.getGoldPrice(),buyAble.getMinaralPrice()))
-                        {
-                            GameObject newObj = Instantiate(willBuildObject, pos, Quaternion.identity);
-                            IcanHaveRoad haveRoad = newObj.GetComponent(typeof(IcanHaveRoad)) as IcanHaveRoad;
-                            // rotate new object face to the platform
-                            Vector2 rotationVector = new Vector2(
-                                    activeObject.transform.position.x - newObj.transform.position.x,
-                                    activeObject.transform.position.y - newObj.transform.position.y
-                                );
-                            newObj.transform.up = rotationVector;
-                            // Create road
-                            GameObject connetionRoad = Instantiate(road, activeObject.transform.position, Quaternion.identity);
-                            // rotate and scale the road between newObj and platform
-                            connetionRoad.transform.localScale += new Vector3(0, distance, 1);
-                            connetionRoad.transform.up = rotationVector;
-                            Vector3 roadPos = new Vector3(
-                                (newObj.transform.position.x + activeObject.transform.position.x) / 2,
-                                (newObj.transform.position.y + activeObject.transform.position.y) / 2,
-                                15f
-                                );
-                            connetionRoad.transform.position = roadPos;
-                            RoadScript roadScript = connetionRoad.GetComponent(typeof(RoadScript)) as RoadScript;
-                            // Set Road variables
-                            roadScript.setTopObject(newObj); // top object the builded object
-                            roadScript.setBottomObject(activeObject); //  bottom object platform
-                                                                      // Add road to new builded object
-                            haveRoad.addRoad(roadScript);
-                            // Adding roads to platformObject
-                            platformScript.addRoad(roadScript);
+                        GameObject newObj = Instantiate(willBuildObject, pos, Quaternion.identity);
+                        IcanHaveRoad haveRoad = newObj.GetComponent(typeof(IcanHaveRoad)) as IcanHaveRoad;
+                        // rotate new object face to the platform
+                        Vector2 rotationVector = new Vector2(
+                                activeObject.transform.position.x - newObj.transform.position.x,
+                                activeObject.transform.position.y - newObj.transform.position.y
+                            );
+                        newObj.transform.up = rotationVector;
+                        // Create road
+                        GameObject connetionRoad = Instantiate(road, activeObject.transform.position, Quaternion.identity);
+                        // rotate and scale the road between newObj and platform
+                        connetionRoad.transform.localScale += new Vector3(0, distance, 1);
+                        connetionRoad.transform.up = rotationVector;
+                        Vector3 roadPos = new Vector3(
+                            (newObj.transform.position.x + activeObject.transform.position.x) / 2,
+                            (newObj.transform.position.y + activeObject.transform.position.y) / 2,
+                            15f
+                            );
+                        connetionRoad.transform.position = roadPos;
+                        RoadScript roadScript = connetionRoad.GetComponent(typeof(RoadScript)) as RoadScript;
+                        // Set Road variables
+                        roadScript.setTopObject(newObj); // top object the builded object
+                        roadScript.setBottomObject(activeObject); //  bottom object platform
+                                                                  // Add road to new builded object
+                        haveRoad.addRoad(roadScript);
+                        // Adding roads to platformObject
+                        platformScript.addRoad(roadScript);
 
-                            if (newObj.CompareTag("Mine"))
-                            {
-                                checkMineAndMinaralConnetion(newObj);
-                            }
-                            if(newObj.CompareTag("House"))
-                            {
-                                resourceManagerScript.updateMaxPopulationCount(5);
-                            }
+                        if (newObj.CompareTag("Mine"))
+                        {
+                            checkMineAndMinaralConnetion(newObj);
+                        }
+                        if (newObj.CompareTag("House"))
+                        {
+                            resourceManagerScript.updateMaxPopulationCount(5);
+                        }
 
-                            // Buy the building
-                            resourceManagerScript.buyBuilding(buyAble.getGoldPrice(), buyAble.getGoldPrice());
-                        }
-                        else
-                        {
-                            Debug.Log("you cant buy");
-                        }
-                    }
-                     endBuildingState();
-                }
-                else
-                {
-                    if (touch.position.y > 30)
-                    {
-                        if (hit.collider != null)
-                        {
-                            if (activeObject != null)
-                            {
-                                IselectAble tmp = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
-                                tmp.setSelect(false);
-                                activeObject = hit.collider.gameObject;
-                                IselectAble selectedObject = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
-                                selectedObject.setSelect(true);
-                            }
-                            else
-                            {
-                                activeObject = hit.collider.gameObject;
-                                IselectAble selectedObject = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
-                                selectedObject.setSelect(true);
-                            }
-                        }
-                        else
-                        {
-                            if (activeObject != null)
-                            {
-                                IselectAble platform = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
-                                if (platform != null)
-                                {
-                                    platform.setSelect(false);
-                                    activeObject = null;
-                                }
-                            }
-                        }
+                        // Buy the building
+                        resourceManagerScript.buyBuilding(buyAble.getGoldPrice(), buyAble.getGoldPrice());
                     }
                     else
                     {
-                        // menu element
+                        Debug.Log("you cant buy");
+                    }
+                }
+                endBuildingState();
+            }
+            else if (touch.phase == TouchPhase.Began) //check for the first touch
+            {
+                
+                fp = Camera.main.ScreenToWorldPoint(touch.position);
+                lp = Camera.main.ScreenToWorldPoint(touch.position);
+            }
+            else if (touch.phase == TouchPhase.Moved) // update the last position based on where they moved
+            {
+                lp = Camera.main.ScreenToWorldPoint(touch.position);
+                Vector3 camMovePos = lp - fp;
+                mainCamera.transform.position += -camMovePos * Time.deltaTime * cameraMoveSpeed;
+            }
+            else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
+            {
+                lp = Camera.main.ScreenToWorldPoint(touch.position);
+                if (Mathf.Abs(lp.x - fp.x) > dragDistance || Mathf.Abs(lp.y - fp.y) > dragDistance)
+                {
+                    Vector3 camMovePos = lp - fp;
+                    mainCamera.transform.position += -camMovePos * Time.deltaTime * cameraMoveSpeed;
+                }
+                else
+                {
+                    if (EventSystem.current.IsPointerOverGameObject() && buildPanel.activeSelf)
+                    {
+                        Debug.Log("on game object");
+                    }
+                    else
+                    {
+                        if (buildPanel.activeSelf)
+                        {
+                            buildPanel.SetActive(false);
+                        }
+                        else
+                        {
+                            if (touch.position.y > 30)
+                            {
+                                if (hit.collider != null)
+                                {
+                                    if (activeObject != null)
+                                    {
+                                        IselectAble tmp = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
+                                        tmp.setSelect(false);
+                                        activeObject = hit.collider.gameObject;
+                                        IselectAble selectedObject = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
+                                        selectedObject.setSelect(true);
+                                    }
+                                    else
+                                    {
+                                        activeObject = hit.collider.gameObject;
+                                        IselectAble selectedObject = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
+                                        selectedObject.setSelect(true);
+                                    }
+                                }
+                                else
+                                {
+                                    if (activeObject != null)
+                                    {
+                                        IselectAble platform = activeObject.GetComponent(typeof(IselectAble)) as IselectAble;
+                                        if (platform != null)
+                                        {
+                                            platform.setSelect(false);
+                                            activeObject = null;
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // menu element
+                            }
+                        }
+                        
                     }
                 }
             }
