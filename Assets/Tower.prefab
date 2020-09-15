@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6504338699002715595}
   m_Layer: 0
   m_Name: Tower
-  m_TagString: Untagged
+  m_TagString: defenceBuildings
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ThetaScale: 0.001
-  radius: 4
+  radius: 3
 --- !u!61 &-15009659713965277
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -174,7 +174,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0.034160614
-        value: 0.04964447
+        value: 0.09220123
         inSlope: 0
         outSlope: 0
         tangentMode: 0

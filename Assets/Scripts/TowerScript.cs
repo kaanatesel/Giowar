@@ -14,7 +14,7 @@ public class TowerScript : MonoBehaviour, IselectAble, IcanHaveRoad, IBuyAble
     private int minaralPrice = 10;
     //Draw Circle variables
     public float ThetaScale = 0.001f;
-    public float radius = 4f;
+    public float radius = 3;
     private int Size;
     private LineRenderer LineDrawer;
     private float Theta = 0f;

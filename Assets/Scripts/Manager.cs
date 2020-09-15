@@ -26,7 +26,7 @@ public class Manager : MonoBehaviour
     private float cameraMoveSpeed;
     private float zoomOutMin = 2;
     private float zoomOutMax = 30;
-    private List<TowerScript> towerScripts;
+    private List<TowerScript> defanceBuildings;
     // Resource production Variables
     private int goldIncomePerMine;
     private int minaralIncomePerMine;
@@ -53,12 +53,21 @@ public class Manager : MonoBehaviour
         buildStateActive = false;
         InvokeRepeating("updateGold", goldIncomeSec, 7.0f);
         InvokeRepeating("updateMinaral", minaralIncomeSec, 7.0f);
-        dragDistance = 0.05f;
+        dragDistance = 0.1f;
+        defanceBuildings = new List<TowerScript>();
     }
 
     //Update is called once per frame
     void Update()
     {
+
+        if(activeObject != null && activeObject.tag == "defenceBuildings")
+            foreach (TowerScript defStructure in defanceBuildings)
+                defStructure.setSelect(true);
+        else
+            foreach (TowerScript defStructure in defanceBuildings)
+                defStructure.setSelect(false);
+
         if (activeObject != null && activeObject.tag == "Platform")
         {
             buildBtn.interactable = true;
@@ -160,6 +169,11 @@ public class Manager : MonoBehaviour
                         if (newObj.CompareTag("House"))
                         {
                             resourceManagerScript.updateMaxPopulationCount(5);
+                        }
+                        if(newObj.CompareTag("defenceBuildings"))
+                        {
+                            TowerScript newDefenceBuilding = newObj.GetComponent(typeof(TowerScript)) as TowerScript;
+                            defanceBuildings.Add(newDefenceBuilding);
                         }
 
                         // Buy the building
