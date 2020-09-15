@@ -26,6 +26,7 @@ public class Manager : MonoBehaviour
     private float cameraMoveSpeed;
     private float zoomOutMin = 2;
     private float zoomOutMax = 30;
+    private List<TowerScript> towerScripts;
     // Resource production Variables
     private int goldIncomePerMine;
     private int minaralIncomePerMine;
@@ -35,8 +36,7 @@ public class Manager : MonoBehaviour
     private Vector3 fp;   //First touch position
     private Vector3 lp;   //Last touch position
     private float dragDistance; // how much does the player moved his finger    
-    private Vector3 fpS;
-    private Vector3 lpS;
+
 
     void Awake()
     {
@@ -98,7 +98,6 @@ public class Manager : MonoBehaviour
 
             float distance = curMagnitude - prevMagnitude;
             float moveDist = distance * 0.01f;
-
             Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - moveDist, zoomOutMin, zoomOutMax);
         }
         else if (Input.touchCount == 1)
@@ -164,7 +163,7 @@ public class Manager : MonoBehaviour
                         }
 
                         // Buy the building
-                        resourceManagerScript.buyBuilding(buyAble.getGoldPrice(), buyAble.getGoldPrice());
+                        resourceManagerScript.buyBuilding(buyAble.getGoldPrice(), buyAble.getMinaralPrice());
                     }
                     else
                     {

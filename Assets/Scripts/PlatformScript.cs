@@ -34,7 +34,7 @@ public class PlatformScript : MonoBehaviour, IselectAble, IcanHaveRoad, IBuyAble
     void Start()
     {
         acvtive = false;    
-        SpriteRenderer spriteRenderer = GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+        //SpriteRenderer spriteRenderer = GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         startColor = Color.green;
         endColor = Color.green;
         LineDrawer = GetComponent<LineRenderer>();
