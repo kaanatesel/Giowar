@@ -10,7 +10,8 @@ TagManager:
   - Mine
   - goldMine
   - minaralMine
-  - defenceBuilding
+  - Undefined
+  - defenceBuildings
   layers:
   - Default
   - TransparentFX

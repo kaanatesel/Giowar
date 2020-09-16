@@ -19,13 +19,11 @@ public class Manager : MonoBehaviour
     public GameObject willBuildObject;
     public GameObject road;
     public List<MinaralScript> resourceList;
+    public CameraScript gameCamera;
     //Private Variables
     private GameObject activeObject;
     private bool buildStateActive;
     private ResourceManagerScript resourceManagerScript;
-    private float cameraMoveSpeed;
-    private float zoomOutMin = 2;
-    private float zoomOutMax = 30;
     private List<TowerScript> defanceBuildings;
     // Resource production Variables
     private int goldIncomePerMine;
@@ -45,7 +43,6 @@ public class Manager : MonoBehaviour
         minaralIncomePerMine = 1;
         goldIncomeSec = 5.0f;
         minaralIncomeSec = 3.0f;
-        cameraMoveSpeed = 10;
     }
     void Start()
     {
@@ -60,6 +57,8 @@ public class Manager : MonoBehaviour
     //Update is called once per frame
     void Update()
     {
+        // Set drag distance 
+        dragDistance = (gameCamera.getOrthographicSize() / 100) * 5;
 
         if(activeObject != null && activeObject.tag == "defenceBuildings")
             foreach (TowerScript defStructure in defanceBuildings)
@@ -107,7 +106,7 @@ public class Manager : MonoBehaviour
 
             float distance = curMagnitude - prevMagnitude;
             float moveDist = distance * 0.01f;
-            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - moveDist, zoomOutMin, zoomOutMax);
+            gameCamera.ZoomInOut(moveDist);
         }
         else if (Input.touchCount == 1)
         {
@@ -195,7 +194,7 @@ public class Manager : MonoBehaviour
             {
                 lp = Camera.main.ScreenToWorldPoint(touch.position);
                 Vector3 camMovePos = lp - fp;
-                Camera.main.transform.position += -camMovePos * Time.deltaTime * cameraMoveSpeed;
+                gameCamera.Move(camMovePos);
             }
             else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
             {
@@ -203,7 +202,7 @@ public class Manager : MonoBehaviour
                 if (Mathf.Abs(lp.x - fp.x) > dragDistance || Mathf.Abs(lp.y - fp.y) > dragDistance)
                 {
                     Vector3 camMovePos = lp - fp;
-                    Camera.main.transform.position += -camMovePos * Time.deltaTime * cameraMoveSpeed;
+                    gameCamera.Move(camMovePos);
                 }
                 else
                 {
