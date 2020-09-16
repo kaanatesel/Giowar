@@ -34,6 +34,7 @@ public class Manager : MonoBehaviour
     private Vector3 fp;   //First touch position
     private Vector3 lp;   //Last touch position
     private float dragDistance; // how much does the player moved his finger    
+    private float dragDistanceMultiplier;
 
 
     void Awake()
@@ -52,13 +53,14 @@ public class Manager : MonoBehaviour
         InvokeRepeating("updateMinaral", minaralIncomeSec, 7.0f);
         dragDistance = 0.1f;
         defanceBuildings = new List<TowerScript>();
+        dragDistanceMultiplier = 10;
     }
 
     //Update is called once per frame
     void Update()
     {
         // Set drag distance 
-        dragDistance = (gameCamera.getOrthographicSize() / 100) * 5;
+        dragDistance = (gameCamera.getOrthographicSize() / 100) * dragDistanceMultiplier;
 
         if(activeObject != null && activeObject.tag == "defenceBuildings")
             foreach (TowerScript defStructure in defanceBuildings)
@@ -193,8 +195,11 @@ public class Manager : MonoBehaviour
             else if (touch.phase == TouchPhase.Moved) // update the last position based on where they moved
             {
                 lp = Camera.main.ScreenToWorldPoint(touch.position);
-                Vector3 camMovePos = lp - fp;
-                gameCamera.Move(camMovePos);
+                if (Mathf.Abs(lp.x - fp.x) > dragDistance || Mathf.Abs(lp.y - fp.y) > dragDistance)
+                {
+                    Vector3 camMovePos = lp - fp;
+                    gameCamera.Move(camMovePos);
+                }
             }
             else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
             {
